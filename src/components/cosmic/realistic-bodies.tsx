@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { renderMoon, renderSun } from "@/lib/celestial-render";
+import { animateRotation, createRotatingMoon } from "@/lib/sphere-rotate";
 import { cn } from "@/lib/utils";
 
 /** Shared cache so the (relatively expensive) renders run once per size. */
@@ -93,6 +94,53 @@ export function RealisticSun({ className }: { className?: string }) {
       <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(closest-side,rgba(255,236,206,0.35),rgba(255,214,170,0.08)_60%,transparent)]" />
       <canvas ref={coronaRef} className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-[2s] data-[ready=true]:opacity-90 motion-safe:animate-[spin_900s_linear_infinite]" />
       <canvas ref={discRef} className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-[1.2s] data-[ready=true]:opacity-100" />
+    </div>
+  );
+}
+
+/**
+ * The hero Moon with true axial rotation: craters travel across the disc while
+ * the lighting (towards the Sun) stays fixed. One turn per `period` seconds.
+ */
+export function RotatingMoon({ className, light, period = 40 }: { className?: string; light: [number, number, number]; period?: number }) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const slot = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = wrap.current, host = slot.current;
+    if (!el || !host) return;
+    let stop = () => {};
+    let canvas: HTMLCanvasElement | null = null;
+    let built = 0;
+    const build = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cap = window.innerWidth < 768 ? 300 : 440;
+      const size = Math.min(cap, Math.round(el.getBoundingClientRect().width * dpr / 8) * 8);
+      if (!size || size === built) return;
+      built = size;
+      stop();
+      canvas?.remove();
+      const r = createRotatingMoon(size, light);
+      canvas = r.canvas;
+      canvas.style.cssText = "width:100%;height:100%;display:block";
+      host.appendChild(canvas);
+      stop = animateRotation(r, period, el);
+      el.dataset.ready = "true";
+    };
+    const id = idle(build);
+    let t = 0;
+    const ro = new ResizeObserver(() => { window.clearTimeout(t); t = window.setTimeout(build, 200); });
+    ro.observe(el);
+    return () => {
+      if (typeof id === "number") window.clearTimeout(id);
+      ro.disconnect(); window.clearTimeout(t); stop(); canvas?.remove();
+    };
+  }, [light, period]);
+
+  return (
+    <div ref={wrap} aria-hidden className={cn("group relative aspect-square", className)}>
+      <div className="absolute -inset-[18%] rounded-full bg-[radial-gradient(closest-side,rgba(226,230,240,0.10),rgba(226,230,240,0.03)_55%,transparent)]" />
+      <div ref={slot} className="relative h-full w-full opacity-0 transition-opacity duration-[1.4s] group-data-[ready=true]:opacity-100" />
     </div>
   );
 }

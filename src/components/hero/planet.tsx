@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 import { planetStrip, ringTexture, type PlanetKind } from "@/lib/planet-textures";
+import { animateRotation, createRotatingGlobe } from "@/lib/sphere-rotate";
 import { cn } from "@/lib/utils";
 
 const ATMOSPHERE: Record<PlanetKind, string> = {
@@ -20,7 +21,7 @@ const ATMOSPHERE: Record<PlanetKind, string> = {
  * a day/night terminator the parent rotates toward the Sun via `data-terminator`.
  */
 export function Planet({
-  kind, size, spin = 40, className, style, terminatorAngle = 0,
+  kind, size, spin = 40, className, style, terminatorAngle = 0, sphere = false,
 }: {
   kind: PlanetKind;
   size: number | string;
@@ -30,19 +31,32 @@ export function Planet({
   style?: CSSProperties;
   /** initial direction (deg) towards the light source */
   terminatorAngle?: number;
+  /** true spherical axial rotation on canvas (features curve across the globe) */
+  sphere?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = host.current;
     if (!el) return;
+    const slot = el.querySelector("[data-strip]");
+    if (sphere && slot) {
+      const texH = 256;
+      const strip = planetStrip(kind, texH);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const px = Math.max(48, Math.min(220, Math.round((el.getBoundingClientRect().width * dpr) / 4) * 4));
+      const globe = createRotatingGlobe(px, strip, texH * 2, texH);
+      globe.canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%";
+      slot.appendChild(globe.canvas);
+      const stop = animateRotation(globe, spin, el);
+      return () => { stop(); globe.canvas.remove(); };
+    }
     const strip = planetStrip(kind, kind === "moon" ? 384 : 256);
     strip.className = "planet-strip";
     strip.style.cssText = `position:absolute;inset:0 auto 0 0;height:100%;width:400%;animation:planet-spin ${spin}s linear infinite;`;
-    const slot = el.querySelector("[data-strip]");
     slot?.appendChild(strip);
     return () => { strip.remove(); };
-  }, [kind, spin]);
+  }, [kind, spin, sphere]);
 
   return (
     <div

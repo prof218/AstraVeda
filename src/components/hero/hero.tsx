@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
 import { NightSky } from "@/components/cosmic/night-sky";
-import { RealisticMoon, RealisticSun } from "@/components/cosmic/realistic-bodies";
+import { RealisticSun, RotatingMoon } from "@/components/cosmic/realistic-bodies";
 import { ZodiacWheel } from "@/components/cosmic/zodiac-wheel";
 import { Planet, Saturn } from "@/components/hero/planet";
 import { renderGalaxy, renderNebula, type PlanetKind } from "@/lib/planet-textures";
@@ -38,7 +38,7 @@ const ORBITS: Orbit[] = [
   { id: "venus", kind: "venus", r: 0.34, size: 18, period: 34, phase: 0.6, stroke: "#F5C46A", spin: 24 },
   { id: "earth", kind: "earth", r: 0.55, size: 34, period: 56, phase: 2.5, stroke: "#2563EB", spin: 18 },
   { id: "mars", kind: "mars", r: 0.76, size: 22, period: 82, phase: 4.3, stroke: "#8B5CF6", spin: 20, desktopOnly: true },
-  { id: "jupiter", kind: "jupiter", r: 0.98, size: 62, period: 118, phase: 1.15, stroke: "#F5C46A", spin: 14 },
+  { id: "jupiter", kind: "jupiter", r: 0.98, size: 62, period: 118, phase: 1.15, stroke: "#F5C46A", spin: 15 },
   { id: "neptune", kind: "neptune", r: 1.2, size: 30, period: 160, phase: 3.5, stroke: "#2563EB", spin: 22, desktopOnly: true },
 ];
 /** Direction from the Moon (left) toward the central Sun. */
@@ -275,7 +275,7 @@ export function Hero() {
           {visible.map((o) => (
             <div key={o.id}>
               <div data-orbit-body={o.id} className="absolute left-0 top-0 will-change-transform" style={{ width: o.size * scale, height: o.size * scale }}>
-                <Planet kind={o.kind} size="100%" spin={o.spin} />
+                <Planet kind={o.kind} size="100%" spin={o.spin} sphere={o.kind === "jupiter"} />
               </div>
               {[0, 1].map((i) => (
                 <span key={i} data-orbit-spark={o.id} className="absolute left-0 top-0 z-[5] size-1 rounded-full will-change-transform"
@@ -289,8 +289,8 @@ export function Hero() {
         <div className="absolute z-[7] left-[-16%] top-[9%] sm:left-[-4%] sm:top-[8%] md:left-[2%] md:top-[12%] lg:left-[1%] lg:top-[33%]">
           <div data-layer="moon" data-depth="26">
             <div className="motion-safe:animate-float">
-              <div className="motion-safe:animate-[moon-librate_24s_ease-in-out_infinite]" style={{ width: moonSize }}>
-                <RealisticMoon light={MOON_LIGHT} className="w-full drop-shadow-[0_0_40px_rgba(226,232,255,0.18)]" />
+              <div style={{ width: moonSize }}>
+                <RotatingMoon light={MOON_LIGHT} period={40} className="w-full drop-shadow-[0_0_40px_rgba(226,232,255,0.18)]" />
               </div>
             </div>
           </div>

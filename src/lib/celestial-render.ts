@@ -18,7 +18,12 @@ import { seededRandom } from "./utils";
 /*  Moon                                                               */
 /* ------------------------------------------------------------------ */
 
-export function renderMoon(size: number, light: [number, number, number] = [-0.62, 0.38, 0.69]) {
+type MoonMaps = { albedo: Float32Array; height: Float32Array; MW: number; MH: number };
+let moonMapsCache: MoonMaps | null = null;
+
+/** Equirectangular albedo + height maps for the Moon (built once, cached). */
+export function buildMoonMaps(): MoonMaps {
+  if (moonMapsCache) return moonMapsCache;
   const noise = createNoise(7);
   const rand = seededRandom(1969);
   const MW = 512, MH = 256;
@@ -108,7 +113,13 @@ export function renderMoon(size: number, light: [number, number, number] = [-0.6
     }
   }
 
-  const sample = (map: Float32Array, u: number, v: number) => {
+  moonMapsCache = { albedo, height, MW, MH };
+  return moonMapsCache;
+}
+
+export function renderMoon(size: number, light: [number, number, number] = [-0.62, 0.38, 0.69]) {
+  const { albedo, height, MW, MH } = buildMoonMaps();
+  const sample =(map: Float32Array, u: number, v: number) => {
     const x = u * (MW - 1), y = v * (MH - 1);
     const x0 = Math.floor(x), y0 = Math.floor(y);
     const x1 = Math.min(MW - 1, x0 + 1), y1 = Math.min(MH - 1, y0 + 1);

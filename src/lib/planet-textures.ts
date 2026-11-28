@@ -58,10 +58,25 @@ export function planetStrip(kind: PlanetKind, height = 256): HTMLCanvasElement {
           const band2 = Math.sin(sl * 34 + turb * 5) * 0.5 + 0.5;
           const cream: RGB = [236, 220, 192], tan: RGB = [200, 158, 112], brown: RGB = [142, 98, 70];
           c = mix(mix(cream, tan, band), brown, band2 * 0.35 * (1 - band));
+          // turbulent eddies along band edges (make rotation readable)
+          const edge = Math.abs(Math.cos(sl * 15 + turb * 3.2));
+          const eddy = n.fbm3(x * 14 + 3, y * 30, z * 14, 4);
+          c = mix(c, [246, 236, 214], smoothstep(0.55, 0.75, eddy) * (1 - edge) * 0.55);
+          c = mix(c, [120, 80, 60], smoothstep(0.62, 0.8, n.fbm3(x * 10, y * 22 + 5, z * 10, 3)) * 0.35);
+          // dark blue-brown festoons in the equatorial zone
+          const fest = smoothstep(0.6, 0.78, n.fbm3(x * 8 + 11, y * 18, z * 8, 3)) * Math.exp(-((lat / 0.12) ** 2));
+          c = mix(c, [92, 78, 92], fest * 0.6);
+          // white ovals in the southern temperate belt
+          for (let o = 0; o < 4; o++) {
+            const dl = Math.atan2(Math.sin(lon - (0.9 + o * 1.55)), Math.cos(lon - (0.9 + o * 1.55)));
+            const ov = Math.exp(-((dl / 0.13) ** 2 + ((lat - 0.62) / 0.045) ** 2));
+            c = mix(c, [250, 246, 236], smoothstep(0.3, 0.8, ov) * 0.85);
+          }
           // Great Red Spot
-          const sx = lon - 2.2, sy = lat - 0.38;
+          const sx = Math.atan2(Math.sin(lon - 2.2), Math.cos(lon - 2.2)), sy = lat - 0.38;
           const spot = Math.exp(-((sx / 0.32) ** 2 + (sy / 0.11) ** 2));
-          c = mix(c, [196, 108, 72], smoothstep(0.25, 0.75, spot));
+          c = mix(c, [190, 96, 62], smoothstep(0.2, 0.75, spot));
+          c = mix(c, [236, 214, 186], smoothstep(0.08, 0.2, spot) * (1 - smoothstep(0.2, 0.4, spot)) * 0.5);
           break;
         }
         case "saturn": {
