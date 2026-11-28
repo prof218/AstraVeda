@@ -34,7 +34,7 @@ export function BlogBrowser() {
           <span className="sr-only">Search articles</span>
           <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-faint" aria-hidden />
           <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search articles…"
-            className="h-11 w-full rounded-full border border-line bg-white/[0.035] pl-11 pr-10 text-sm text-star placeholder:text-faint outline-none focus:border-violet/60 [&::-webkit-search-cancel-button]:hidden" />
+            className="h-11 w-full rounded-full border border-line bg-white/[0.035] pl-11 pr-10 text-base sm:text-sm text-star placeholder:text-faint outline-none focus:border-violet/60 [&::-webkit-search-cancel-button]:hidden" />
           {query && (
             <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-faint hover:text-star">
               <X className="size-4" />

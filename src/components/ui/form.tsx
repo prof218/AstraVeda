@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const fieldBase =
-  "w-full rounded-[10px] border border-line bg-white/[0.035] px-4 text-[0.95rem] text-star placeholder:text-faint transition-[border-color,box-shadow,background-color] duration-200 outline-none hover:border-line-strong focus:border-lavender/60 focus:bg-white/[0.06] aria-[invalid=true]:border-danger/70";
+  "w-full rounded-[10px] border border-line bg-white/[0.035] px-4 text-base text-star placeholder:text-faint sm:text-[0.95rem] transition-[border-color,box-shadow,background-color] duration-200 outline-none hover:border-line-strong focus:border-lavender/60 focus:bg-white/[0.06] aria-[invalid=true]:border-danger/70";
 
 export function Field({
   label, htmlFor, error, hint, required, children, className,
@@ -10,7 +10,7 @@ export function Field({
   label: string; htmlFor: string; error?: string; hint?: string; required?: boolean; children: ReactNode; className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex min-w-0 flex-col gap-2", className)}>
       <label htmlFor={htmlFor} className="text-[0.8rem] font-medium tracking-wide text-lavender/90">
         {label}
         {required && <span className="ml-0.5 text-violet-soft" aria-hidden>*</span>}

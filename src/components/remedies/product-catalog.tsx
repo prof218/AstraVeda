@@ -41,7 +41,7 @@ export function ProductCatalog() {
           <span className="sr-only">Search remedies</span>
           <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-faint" aria-hidden />
           <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search gemstones, planets…" type="search"
-            className="h-11 w-full rounded-full border border-line bg-white/[0.035] pl-11 pr-4 text-sm text-star placeholder:text-faint outline-none focus:border-violet/60" />
+            className="h-11 w-full rounded-full border border-line bg-white/[0.035] pl-11 pr-4 text-base sm:text-sm text-star placeholder:text-faint outline-none focus:border-violet/60" />
         </label>
       </div>
 

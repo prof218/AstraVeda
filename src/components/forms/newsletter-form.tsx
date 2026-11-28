@@ -53,7 +53,7 @@ export function NewsletterForm() {
           placeholder="Your email address"
           aria-invalid={errors.email ? true : undefined}
           aria-describedby={errors.email ? "newsletter-error" : undefined}
-          className="min-w-0 flex-1 bg-transparent px-4 text-sm text-star placeholder:text-faint outline-none"
+          className="min-w-0 flex-1 bg-transparent px-4 text-base text-star placeholder:text-faint outline-none sm:text-sm"
           {...register("email")}
         />
         <button

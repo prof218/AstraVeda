@@ -10,7 +10,7 @@ export function KundliSection() {
       <div className="container-cosmic">
         <div className="relative overflow-hidden rounded-[20px] border border-line bg-abyss">
 
-          <div className="relative grid gap-12 p-6 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:p-16">
+          <div className="relative grid gap-10 p-5 sm:gap-12 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:p-16">
             <div data-reveal className="flex flex-col">
               <p className="eyebrow mb-5">Free Kundli</p>
               <h2 id="kundli-title" className="text-4xl leading-[1.05] sm:text-5xl">
@@ -30,7 +30,7 @@ export function KundliSection() {
                 <ChartTemplate className="" />
               </div>
             </div>
-            <div data-reveal className="glass rounded-2xl p-6 sm:p-8">
+            <div data-reveal className="glass rounded-2xl p-4 sm:p-8">
               <KundliForm compact />
             </div>
           </div>

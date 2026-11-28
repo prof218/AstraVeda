@@ -38,7 +38,7 @@ export default function KundliPage() {
       />
       <Section className="pt-2 sm:pt-6">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="glass rounded-[20px] p-6 sm:p-10">
+          <div className="glass rounded-[20px] p-5 sm:p-10">
             <h2 className="mb-2 text-3xl">Birth details</h2>
             <p className="mb-8 text-sm text-muted">All fields are required for an accurate chart.</p>
             <KundliForm />

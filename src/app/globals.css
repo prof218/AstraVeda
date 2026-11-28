@@ -104,6 +104,27 @@
     border-radius: 6px;
   }
   input, textarea, select, button { font: inherit; }
+  /* iOS Safari: native date/time inputs have an intrinsic min-width and
+     ignore width:100%, overflowing their container. Reset them. */
+  input[type="date"],
+  input[type="time"] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    text-align: left;
+  }
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value {
+    text-align: left;
+    min-height: 1.5em;
+    margin: 0;
+  }
+  input[type="date"]::-webkit-datetime-edit,
+  input[type="time"]::-webkit-datetime-edit {
+    padding: 0;
+  }
   input[type="date"]::-webkit-calendar-picker-indicator,
   input[type="time"]::-webkit-calendar-picker-indicator {
     filter: invert(0.8) sepia(0.4) hue-rotate(210deg);

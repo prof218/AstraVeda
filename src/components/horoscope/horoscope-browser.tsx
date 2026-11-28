@@ -86,7 +86,7 @@ export function SignFinder() {
       className="glass flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-end"
       noValidate
     >
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
         <label htmlFor="finder-dob" className="text-[0.8rem] font-medium text-lavender/90">Don&apos;t know your sign? Enter your birth date</label>
         <input
           id="finder-dob"

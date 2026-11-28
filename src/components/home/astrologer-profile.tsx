@@ -7,7 +7,6 @@ import { DemoNote } from "@/components/common/section";
 export function AstrologerProfile() {
   return (
     <section aria-labelledby="profile-title" className="relative overflow-hidden py-20 sm:py-28 lg:py-32">
-      <div aria-hidden className="pointer-events-none absolute right-0 top-0 h-full w-1/2 bg-white/[0.04]" />
       <div className="container-cosmic relative grid gap-14 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5 lg:col-start-8 lg:row-start-1">
           <div data-reveal="scale" className="relative mx-auto max-w-md lg:sticky lg:top-28">
