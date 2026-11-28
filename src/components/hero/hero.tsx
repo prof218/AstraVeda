@@ -358,7 +358,7 @@ export function Hero() {
       <div className="container-cosmic relative z-10 w-full pt-[282px] sm:pt-[clamp(200px,33svh,320px)] text-center">
         <div data-hero-copy data-hero-in className="mx-auto max-w-4xl [text-shadow:0_2px_22px_rgba(5,5,16,0.9)]">
           <p className="mb-5 text-[0.66rem] font-medium uppercase tracking-[0.34em] text-[#F8F7FF]/80 sm:text-xs">
-            Ancient Wisdom • Modern Guidance
+            First Time, Original Intelligence Applied in Vedic Science
           </p>
           <h1 id="hero-title" className="font-display text-[2.45rem] font-semibold leading-[1.06] tracking-[-0.01em] text-[#F8F7FF] xs:text-5xl sm:text-6xl lg:text-[4.1rem]">
             Discover What The Universe
@@ -369,7 +369,7 @@ export function Hero() {
             </span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-[0.95rem] leading-7 text-[#F8F7FF]/80 sm:text-lg">
-            Explore your cosmic journey through personalized astrology, ancient wisdom, and expert celestial guidance.
+            30 years of experience in Vedic Astrology, Lal Kitab, KP and Numerology — honest guidance for life’s problems, with no false promises.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 xs:flex-row xs:gap-8">
             <Link

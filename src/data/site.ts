@@ -5,9 +5,9 @@
  */
 export const site = {
   name: "AstraVeda",
-  tagline: "Vedic Astrology & Celestial Guidance",
+  tagline: "First Time, Original Intelligence Applied in Vedic Science",
   description:
-    "Personalised Vedic astrology, Kundli analysis, numerology and Vastu consultations — ancient wisdom translated into clear, practical guidance for modern life.",
+    "Honest, practical astrology by Mahender Singh — 30 years of experience in Vedic Astrology, BNN, Lal Kitab, KP Astrology, Numerology and Graphology. Consultations by phone and email.",
   url: "https://astraveda-six.vercel.app",
   currency: "INR",
   locale: "en-IN",
