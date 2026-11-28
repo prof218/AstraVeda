@@ -30,6 +30,8 @@ type Body = {
   spin: number;
   /** orbit around the Sun instead of the scene centre */
   aroundSun?: boolean;
+  /** phone only: explicit orbit around the Sun [rx, ry] as fractions of width, plus start angle */
+  ring?: [number, number, number];
 };
 
 const DESKTOP: Body[] = [
@@ -47,11 +49,12 @@ const TABLET: Body[] = [
   { id: "saturn", kind: "saturn-ringed", at: [0.92, 0.66], size: 0.06, period: 250, spin: 30 },
 ];
 const MOBILE: Body[] = [
-  { id: "mercury", kind: "mercury", at: [0.17, 0.12], size: 0.07, period: 70, spin: 26, aroundSun: true },
-  { id: "jupiter", kind: "jupiter", at: [0.08, 0.24], size: 0.07, period: 150, spin: 15 },
-  { id: "earth", kind: "earth", at: [0.1, 0.66], size: 0.15, period: 120, spin: 24 },
-  { id: "moon", kind: "moon-lit", at: [0.88, 0.13], size: 0.17, period: 210, spin: 40 },
-  { id: "saturn", kind: "saturn-ringed", at: [0.88, 0.2], size: 0.1, period: 250, spin: 30 },
+  // phone: a compact solar system circling the Sun above the headline
+  { id: "mercury", kind: "mercury", at: [0, 0], size: 0.045, period: 24, spin: 20, ring: [0.3, 0.15, 0.9] },
+  { id: "jupiter", kind: "jupiter", at: [0, 0], size: 0.075, period: 36, spin: 15, ring: [0.3, 0.15, 3.7] },
+  { id: "earth", kind: "earth", at: [0, 0], size: 0.085, period: 50, spin: 20, ring: [0.41, 0.24, 2.5] },
+  { id: "moon", kind: "moon-lit", at: [0, 0], size: 0.11, period: 60, spin: 40, ring: [0.41, 0.24, -0.6] },
+  { id: "saturn", kind: "saturn-ringed", at: [0, 0], size: 0.085, period: 80, spin: 30, ring: [0.41, 0.24, 0.9] },
 ];
 
 /** The Sun sits below-left of the Moon in the composition. */
@@ -98,10 +101,7 @@ export function Hero() {
   // Procedural nebula, galaxy and night-side Earth texture (once).
   useEffect(() => {
     const small = window.innerWidth < 768;
-    const neb = renderSideNebula(small ? 200 : 420, small ? 300 : 240);
-    neb.style.cssText = "width:100%;height:100%;filter:blur(3px)";
-    nebulaRef.current?.appendChild(neb);
-    const gal = renderSpiralGalaxy(small ? 300 : 520);
+    const gal =renderSpiralGalaxy(small ? 300 : 520);
     gal.style.cssText = "width:100%;height:100%";
     galaxyRef.current?.appendChild(gal);
     const strip = renderNightEarthStrip(small ? 1024 : 2048, small ? 220 : 360);
@@ -114,26 +114,48 @@ export function Hero() {
       earthStripRef.current?.appendChild(c);
       copies.push(c);
     }
-    return () => { neb.remove(); gal.remove(); copies.forEach((c) => c.remove()); };
+    return () => { gal.remove(); copies.forEach((c) => c.remove()); };
   }, []);
 
   const { w: W, h: H } = dims;
   const mobile = W < 640;
+
+  // Nebula: phones get one drawn to the hero's real (tall) proportions so the
+  // clouds don't stretch into streaks; tablet/desktop keep the original render.
+  const nebulaKey = mobile ? `phone-${Math.round((H / W) * 4)}` : "wide";
+  useEffect(() => {
+    const host = nebulaRef.current;
+    if (!host) return;
+    let neb: HTMLCanvasElement;
+    if (nebulaKey.startsWith("phone")) {
+      neb = renderSideNebula(240, Math.round(240 * (H / W)), true);
+      neb.style.cssText = "width:100%;height:100%;filter:blur(5px);opacity:0.75";
+    } else {
+      const small = window.innerWidth < 768;
+      neb = renderSideNebula(small ? 200 : 420, small ? 300 : 240);
+      neb.style.cssText = "width:100%;height:100%;filter:blur(3px)";
+    }
+    host.appendChild(neb);
+    return () => neb.remove();
+    // re-render only when switching between phone/wide or the phone aspect bucket changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nebulaKey]);
   const tablet = W >= 640 && W < 1024;
   const bodies = mobile ? MOBILE : tablet ? TABLET : DESKTOP;
   const sizeK = 1;
 
   // Sun + zodiac wheel at top centre
-  const sun = { x: W * 0.5, y: H * (mobile ? 0.17 : 0.245) };
-  const sunSize = mobile ? W * 0.6 : Math.min(W * 0.27, 440);
+  const sun = { x: W * 0.5, y: mobile ? 165 : H * 0.245 };
+  const sunSize = mobile ? W * 0.42 : Math.min(W * 0.27, 440);
   // zodiac ring seen at an angle (flattened ellipse), as in the reference
-  const wheelSize = mobile ? W * 0.92 : Math.min(W * 0.38, 620);
+  const wheelSize = mobile ? W * 0.84 : Math.min(W * 0.38, 620);
 
   // Main orbit system: every orbit passes through its body's place in the composition
   const centre = { x: W * 0.5, y: H * (mobile ? 0.42 : 0.44) };
   const RY = H * (mobile ? 0.3 : 0.33);
   const SUN_RY = H * (mobile ? 0.1 : 0.12);
   const orbitOf = (b: Body) => {
+    if (b.ring) return { c: sun, rx: b.ring[0] * W, ry: b.ring[1] * W, theta: b.ring[2] };
     const c = b.aroundSun ? sun : centre;
     const ry = b.aroundSun ? SUN_RY : RY;
     const dx = b.at[0] * W - c.x, dy = b.at[1] * H - c.y;
@@ -146,7 +168,7 @@ export function Hero() {
   const orbits = bodies.map((b) => ({ b, ...orbitOf(b), px: b.size * W * sizeK }));
 
   // Earth's night-side horizon — a very large sphere whose cap fills the bottom
-  const horizonTop = H * (mobile ? 0.8 : 0.745);
+  const horizonTop = mobile ? H - 250 : H * 0.745;
   const earthR = mobile ? W * 1.35 : W * 2.05;
 
   useLayoutEffect(() => {
@@ -264,7 +286,7 @@ export function Hero() {
         </div>
 
         {/* spiral galaxy (top left): tilted plane, spinning disc */}
-        <div data-depth="16" className="absolute left-[-6%] top-[6%] w-[38vw] max-w-[300px] sm:left-[0%] md:w-[21vw] md:max-w-[360px]" style={{ perspective: "800px" }}>
+        <div data-depth="16" className="absolute left-[-6%] top-[6%] hidden w-[38vw] sm:block max-w-[300px] sm:left-[0%] md:w-[21vw] md:max-w-[360px]" style={{ perspective: "800px" }}>
           <div className="aspect-square w-full" style={{ transform: "rotateZ(-26deg) rotateX(57deg)" }}>
             <div ref={galaxyRef} className="h-full w-full opacity-90 mix-blend-screen motion-safe:animate-[spin_160s_linear_infinite]" />
           </div>
@@ -287,7 +309,7 @@ export function Hero() {
           className="absolute [mask-image:linear-gradient(to_bottom,#000_0%,#000_50%,transparent_66%)]"
           style={{ left: sun.x - wheelSize / 2, top: sun.y - wheelSize / 2, width: wheelSize, height: wheelSize }}
         >
-          <div className="absolute inset-0" style={{ transform: "rotateX(62deg)" }}>
+          <div className="absolute inset-0" style={{ transform: mobile ? "rotateX(56deg)" : "rotateX(62deg)" }}>
             <div data-layer="wheel" className="absolute inset-0 opacity-95 [filter:drop-shadow(0_0_6px_rgba(245,196,106,0.6))]">
               <ZodiacWheel color="#F5C46A" />
             </div>
@@ -333,7 +355,7 @@ export function Hero() {
       </div>
 
       {/* ================= Copy ================= */}
-      <div className="container-cosmic relative z-10 w-full pt-[clamp(200px,33svh,320px)] text-center">
+      <div className="container-cosmic relative z-10 w-full pt-[282px] sm:pt-[clamp(200px,33svh,320px)] text-center">
         <div data-hero-copy data-hero-in className="mx-auto max-w-4xl [text-shadow:0_2px_22px_rgba(5,5,16,0.9)]">
           <p className="mb-5 text-[0.66rem] font-medium uppercase tracking-[0.34em] text-[#F8F7FF]/80 sm:text-xs">
             Ancient Wisdom • Modern Guidance

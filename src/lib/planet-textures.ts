@@ -256,7 +256,9 @@ export function renderGalaxy(size = 420): HTMLCanvasElement {
 /* ------------------------------------------------------------------ */
 
 /** Vivid purple nebula concentrated on the left and right edges. */
-export function renderSideNebula(w: number, h: number): HTMLCanvasElement {
+export function renderSideNebula(w: number, h: number, isotropic = false): HTMLCanvasElement {
+  // isotropic: keep cloud features round on tall (phone) canvases instead of stretched
+  const vk = isotropic ? (h / w) / (240 / 420) : 1;
   const cvs = document.createElement("canvas");
   cvs.width = w; cvs.height = h;
   const ctx = cvs.getContext("2d")!;
@@ -271,9 +273,9 @@ export function renderSideNebula(w: number, h: number): HTMLCanvasElement {
       const right = Math.exp(-(((u - 0.95) / 0.27) ** 2) - (((v - 0.6) / 0.34) ** 2));
       const top = Math.exp(-(((v - 0.05) / 0.25) ** 2)) * 0.25;
       const mask = Math.min(1, left + right + top);
-      const cloud = n.fbm2(u * 4.5, v * 4.5, 6);
-      const wisps = n.fbm2(u * 11 + 7, v * 11, 5);
-      const dust = smoothstep(0.52, 0.7, n.fbm2(u * 6 + 30, v * 6, 5));
+      const cloud = n.fbm2(u * 4.5, v * 4.5 * vk, 6);
+      const wisps = n.fbm2(u * 11 + 7, v * 11 * vk, 5);
+      const dust = smoothstep(0.52, 0.7, n.fbm2(u * 6 + 30, v * 6 * vk, 5));
       const dens = Math.max(0, smoothstep(0.32, 0.75, cloud) * 1.05 + smoothstep(0.5, 0.82, wisps) * 0.55) * mask * (1 - 0.65 * dust);
       const hot = smoothstep(0.62, 0.9, cloud * wisps * 1.6) * mask;
       const k = (y * w + x) * 4;
