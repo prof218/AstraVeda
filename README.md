@@ -1,5 +1,7 @@
 # AstraVeda — Vedic Astrology & Consultation Platform
 
+**Live demo:** https://astraveda-six.vercel.app
+
 A premium, frontend-only website for a Vedic astrology practice: services, horoscopes, Kundli, numerology, Vastu, remedies, blog, gallery and a complete multi-step consultation booking flow.
 
 The home page opens on a rendered night sky: a Milky Way band with dust lanes, a physically shaded Moon (Lommel–Seeliger lighting, maria, craters and ray systems) lit by a limb-darkened Sun with a slowly turning corona. All of it is computed procedurally in the browser, with no image assets.
