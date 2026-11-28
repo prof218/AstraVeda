@@ -48,7 +48,6 @@ export function Footer() {
               <li className="flex gap-3"><MapPin className="mt-0.5 size-4 shrink-0 text-lavender/70" aria-hidden /><address className="not-italic">{site.contact.address.join(", ")}</address></li>
               <li className="flex gap-3"><Clock className="mt-0.5 size-4 shrink-0 text-lavender/70" aria-hidden />{site.contact.hours}</li>
             </ul>
-            <p className="mt-5 text-[0.7rem] text-faint">Contact details are placeholders.</p>
           </div>
         </div>
 

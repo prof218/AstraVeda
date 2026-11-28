@@ -3,24 +3,24 @@ import type { BookingService, ConsultationMode, IconName } from "@/types";
 import { hashString } from "@/lib/utils";
 
 /**
- * Booking wizard options. Prices are DEMO values for the prototype only.
+ * Booking wizard options. Fees follow msastrologer.com: a 30-minute phone
+ * consultation is INR 2,100; a single question (10 min) is INR 1,100.
  */
 export const bookingServices: BookingService[] = [
-  { id: "vedic", name: "Vedic Astrology", description: "Complete birth chart reading & life overview", icon: "sun", duration: "45 min", price: 1500 },
-  { id: "kundli", name: "Kundli Analysis", description: "In-depth Janam Kundli with divisional charts", icon: "scroll", duration: "60 min", price: 2500 },
-  { id: "love", name: "Love & Relationship", description: "Emotional patterns, Venus & relationship timing", icon: "heart", duration: "40 min", price: 1500 },
-  { id: "marriage", name: "Marriage Consultation", description: "Kundli matching & marriage timing", icon: "rings", duration: "60 min", price: 2100 },
-  { id: "career", name: "Career Guidance", description: "Vocation, job change & growth windows", icon: "briefcase", duration: "45 min", price: 1500 },
-  { id: "business", name: "Business Guidance", description: "Ventures, partnerships & financial cycles", icon: "coins", duration: "45 min", price: 2100 },
-  { id: "numerology", name: "Numerology", description: "Life Path, Destiny & name analysis", icon: "hash", duration: "30 min", price: 1100 },
-  { id: "vastu", name: "Vastu Consultation", description: "Home, office or shop floor-plan review", icon: "compass", duration: "60 min", price: 3100 },
-  { id: "general", name: "General Consultation", description: "Ask any question — one focused topic", icon: "sparkles", duration: "30 min", price: 1100 },
+  { id: "vedic", name: "Vedic Astrology", description: "Complete birth chart reading & life overview", icon: "sun", duration: "30 min", price: 2100 },
+  { id: "kundli", name: "Kundli Analysis", description: "In-depth Janam Kundli with divisional charts", icon: "scroll", duration: "30 min", price: 2100 },
+  { id: "love", name: "Love & Relationship", description: "Emotional patterns, Venus & relationship timing", icon: "heart", duration: "30 min", price: 2100 },
+  { id: "marriage", name: "Marriage Consultation", description: "Kundli matching & marriage timing", icon: "rings", duration: "30 min", price: 2100 },
+  { id: "career", name: "Career Guidance", description: "Vocation, job change & growth windows", icon: "briefcase", duration: "30 min", price: 2100 },
+  { id: "business", name: "Business Guidance", description: "Ventures, partnerships & financial cycles", icon: "coins", duration: "30 min", price: 2100 },
+  { id: "numerology", name: "Numerology", description: "Life Path, Destiny & name analysis", icon: "hash", duration: "30 min", price: 2100 },
+  { id: "vastu", name: "Vastu Consultation", description: "Home, office or shop floor-plan review", icon: "compass", duration: "30 min", price: 2100 },
+  { id: "general", name: "Ask 1 Question", description: "One specific question, answered from your chart", icon: "sparkles", duration: "10 min", price: 1100 },
 ];
 
 export const consultationModes: { id: ConsultationMode; name: string; description: string; icon: IconName }[] = [
-  { id: "video", name: "Video Call", description: "Face-to-face over Google Meet or Zoom", icon: "video" },
-  { id: "audio", name: "Audio Call", description: "A focused phone or WhatsApp call", icon: "phone" },
-  { id: "chat", name: "Chat Consultation", description: "Written guidance over secure chat", icon: "message" },
+  { id: "audio", name: "Phone Call", description: "A focused one-to-one call with Mahender Singh", icon: "phone" },
+  { id: "chat", name: "Email Consultation", description: "Up to 3 questions, written reply in 7–10 days", icon: "message" },
 ];
 
 const ALL_SLOTS = ["10:00", "10:45", "11:30", "12:15", "14:00", "14:45", "15:30", "16:15", "17:00", "17:45", "18:30"];

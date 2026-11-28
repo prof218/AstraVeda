@@ -12,7 +12,7 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 const steps: { title: string; text: string; icon: IconName }[] = [
   { title: "Choose Your Service", text: "Pick the consultation that fits your question — or a general session if you're unsure.", icon: "sparkles" },
   { title: "Share Your Birth Details", text: "Date, exact time and place of birth let us prepare your chart in advance.", icon: "scroll" },
-  { title: "Schedule Your Consultation", text: "Select a date, a time slot and how you'd like to talk — video, audio or chat.", icon: "calendar" },
+  { title: "Schedule Your Consultation", text: "Choose a date and time slot, and whether you'd like a phone call or an email consultation.", icon: "calendar" },
   { title: "Receive Personal Guidance", text: "A focused, unhurried session with clear insights and practical next steps.", icon: "star" },
 ];
 

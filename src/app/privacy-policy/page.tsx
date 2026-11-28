@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         { h: "Information we would collect", p: "In the live service: your name, contact details, birth date, time and place, and the questions you share, used solely to prepare and deliver consultations." },
         { h: "Confidentiality", p: "Birth details and consultation notes would be kept confidential and never sold or shared with third parties, except where required by law." },
         { h: "Your rights", p: "You would be able to request access to, correction of, or deletion of your personal data by contacting us." },
-        { h: "Contact", p: "Questions about privacy can be sent via the contact page (placeholder details)." },
+        { h: "Contact", p: "Questions about privacy can be sent by email to contactmsastrologer@gmail.com or on WhatsApp at +91-9205573935." },
       ]}
     />
   );

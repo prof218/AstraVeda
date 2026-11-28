@@ -8,7 +8,7 @@ export function PricingSection() {
         id="pricing-title"
         eyebrow="Consultation Pricing"
         title={<>Choose the depth of <em className="text-gradient">your reading</em></>}
-        description="Transparent, simple options. Prices shown are demo values and will be replaced with confirmed fees."
+        description="Simple, transparent fees for phone and email consultations with Mahender Singh."
       />
       <div className="mt-20">
         <PricingCards />

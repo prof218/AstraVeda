@@ -19,7 +19,7 @@ export default function ServicesPage() {
       <PageHero
         eyebrow="Services"
         title={<>Consultations for <em className="text-gradient">every question</em></>}
-        description="Each service is prepared from your own birth details and delivered by video, audio or chat — with clear, practical guidance you can act on."
+        description="Each service is prepared from your own birth details and delivered by phone or email — with clear, practical guidance you can act on."
         crumbs={[{ label: "Services" }]}
       />
       <Section className="pt-4 sm:pt-6">
@@ -29,7 +29,7 @@ export default function ServicesPage() {
       </Section>
       <HowItWorks />
       <Section>
-        <SectionHeading eyebrow="Pricing" title={<>Simple, <em className="text-gradient">transparent</em> options</>} description="Demo prices shown — final fees will be confirmed by the client." />
+        <SectionHeading eyebrow="Pricing" title={<>Simple, <em className="text-gradient">transparent</em> options</>} description="Clear fees for phone and email consultations — book on WhatsApp or by email." />
         <div className="mt-20"><PricingCards /></div>
       </Section>
       <CtaBand />

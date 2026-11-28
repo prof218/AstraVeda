@@ -26,7 +26,7 @@ export function PricingCards() {
           <div className="mt-6 flex items-end gap-2">
             <span className="font-display text-6xl leading-none text-gradient">{formatPrice(plan.price)}</span>
           </div>
-          <p className="mt-2 text-[0.7rem] text-faint">Demo price · to be confirmed</p>
+          <p className="mt-2 text-[0.7rem] text-faint">Book on WhatsApp or email</p>
 
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 border-y border-line py-4 text-sm text-star/85">
             <span className="inline-flex items-center gap-2"><Clock className="size-4 text-lavender" aria-hidden />{plan.duration}</span>

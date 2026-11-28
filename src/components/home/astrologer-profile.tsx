@@ -2,7 +2,6 @@ import { Award, ArrowRight } from "lucide-react";
 import { astrologer } from "@/data/astrologer";
 import { Portrait } from "@/components/common/portrait";
 import { ButtonLink } from "@/components/ui/button";
-import { DemoNote } from "@/components/common/section";
 
 export function AstrologerProfile() {
   return (
@@ -57,7 +56,6 @@ export function AstrologerProfile() {
 
           <div data-reveal className="mt-12 flex flex-col items-start gap-5">
             <ButtonLink href="/book-consultation" size="lg">Book a Consultation <ArrowRight className="size-4" /></ButtonLink>
-            <DemoNote>Placeholder biography — replace with the astrologer’s verified details</DemoNote>
           </div>
         </div>
       </div>

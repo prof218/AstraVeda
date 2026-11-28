@@ -48,7 +48,7 @@ export default async function ServiceDetailPage({ params }: PageProps<"/services
           <ButtonLink href={`/book-consultation?service=${service.bookingId}`} size="lg">Book this consultation <ArrowRight className="size-4" /></ButtonLink>
           {booking && (
             <p className="flex items-center gap-2 text-sm text-muted">
-              <Clock className="size-4 text-lavender" aria-hidden /> {booking.duration} · from {formatPrice(booking.price)} <span className="text-faint">(demo)</span>
+              <Clock className="size-4 text-lavender" aria-hidden /> {booking.duration} · {formatPrice(booking.price)}
             </p>
           )}
         </div>
@@ -92,7 +92,7 @@ export default async function ServiceDetailPage({ params }: PageProps<"/services
                 {service.whoFor.map((w) => <li key={w} className="rounded-full border border-line px-3 py-1 text-xs text-star/80">{w}</li>)}
               </ul>
               <h3 className="mt-7 text-sm font-medium text-star/60">Consultation modes</h3>
-              <p className="mt-2 text-sm text-muted">Video call · Audio call · Chat</p>
+              <p className="mt-2 text-sm text-muted">Phone call · Email</p>
               <ButtonLink href={`/book-consultation?service=${service.bookingId}`} className="mt-7 w-full">Book Consultation</ButtonLink>
             </div>
             <div className="rounded-2xl border border-line p-7">

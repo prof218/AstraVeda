@@ -5,12 +5,12 @@ import { ZodiacWheel } from "@/components/cosmic/zodiac-wheel";
 import { cn } from "@/lib/utils";
 
 export const trustFactors: { title: string; text: string; icon: IconName }[] = [
-  { title: "Experienced Astrologer", text: "Nearly two decades of classical Jyotish practice and thousands of charts read.", icon: "star" },
+  { title: "Experienced Astrologer", text: "30 years of practice across Vedic, BNN, Lal Kitab, KP, Numerology and Graphology.", icon: "star" },
   { title: "Personalised Consultations", text: "Every session is prepared from your own chart — never a template reading.", icon: "user" },
-  { title: "Traditional Knowledge", text: "Rooted in Parashari and Jaimini texts, explained in clear, modern language.", icon: "book" },
+  { title: "Traditional Knowledge", text: "Vedic, BNN, KP and Lal Kitab techniques, explained in clear, simple language.", icon: "book" },
   { title: "Confidential Sessions", text: "Your birth details and questions stay private, always.", icon: "shield" },
-  { title: "Practical Guidance", text: "Clear next steps and simple remedies — no fear, no pressure to buy.", icon: "lightbulb" },
-  { title: "Online, Worldwide", text: "Consult by video, audio or chat from anywhere, in English or Hindi.", icon: "orbit" },
+  { title: "Honest, No False Promises", text: "A clear opinion and simple remedies — no hidden agenda to sell costly gemstones.", icon: "lightbulb" },
+  { title: "Phone & Email, Worldwide", text: "Consult by phone or email from anywhere — book on WhatsApp or by email.", icon: "orbit" },
 ];
 
 function Factor({ f, align }: { f: (typeof trustFactors)[number]; align: "left" | "right" }) {

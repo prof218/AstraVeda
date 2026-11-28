@@ -23,7 +23,7 @@ export function Stats() {
           </dl>
         </div>
         <div className="mt-4 flex justify-center">
-          <DemoNote>Placeholder statistics — to be confirmed by the client</DemoNote>
+          <DemoNote>Client and consultation counts are placeholders — to be confirmed</DemoNote>
         </div>
       </div>
     </section>

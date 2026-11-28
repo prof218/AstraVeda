@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock, Mail, MessageCircle, Phone } from "lucide-react";
 import { site } from "@/data/site";
 import { PageHero } from "@/components/common/page-hero";
 import { DemoNote, Section } from "@/components/common/section";
@@ -25,7 +25,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title={<>Let&apos;s talk about <em className="text-gradient">your path</em></>}
-        description="Questions about a consultation, a Vastu project or remedies? Send a message, or book a session directly."
+        description="Questions about a consultation, a reading or remedies? Send a message, or book a session directly."
         crumbs={[{ label: "Contact" }]}
       >
         <ButtonLink href="/book-consultation">Book a Consultation</ButtonLink>
@@ -34,7 +34,7 @@ export default function ContactPage() {
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="glass rounded-[20px] p-6 sm:p-10">
             <h2 className="text-3xl">Send a message</h2>
-            <p className="mb-8 mt-1 text-sm text-muted">We aim to respond within one working day (placeholder).</p>
+            <p className="mb-8 mt-1 text-sm text-muted">Prefer a quick reply? Message on WhatsApp at {site.contact.whatsapp}.</p>
             <ContactForm />
           </div>
           <div className="space-y-6">
@@ -49,21 +49,20 @@ export default function ContactPage() {
                 </li>
               ))}
             </ul>
-            <div className="overflow-hidden rounded-[20px] border border-line">
-              {/* Map placeholder — replace with an embedded map once the address is confirmed */}
-              <div className="relative aspect-[4/3] bg-[linear-gradient(rgba(196,181,253,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(196,181,253,0.06)_1px,transparent_1px)] bg-[size:28px_28px]" role="img" aria-label="Map placeholder">
-                <svg aria-hidden viewBox="0 0 400 300" className="absolute inset-0 h-full w-full opacity-50">
-                  <path d="M0 200 C80 180 120 120 200 140 S330 90 400 110" fill="none" stroke="#c4b5fd" strokeOpacity="0.35" strokeWidth="6" />
-                  <path d="M150 0 C160 100 140 200 170 300" fill="none" stroke="#38bdf8" strokeOpacity="0.25" strokeWidth="4" />
-                </svg>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full">
-                  <MapPin className="size-10 fill-lavender/30 text-lavender drop-" aria-hidden />
-                </div>
-                <p className="absolute bottom-4 left-4 rounded-full border border-line bg-void/70 px-3 py-1 text-[0.65rem] text-faint">Map placeholder</p>
+            <div className="rounded-[20px] border border-line bg-white/[0.02] p-6">
+              <h2 className="text-2xl">How to book</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Send a message on WhatsApp or an email with your question and birth details (date, time and place of birth).
+                Consultations happen by phone or email for clients across India and abroad.
+              </p>
+              <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
+                <a href={site.contact.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-[10px] bg-[#eeecf4] px-5 text-sm font-medium text-[#0b0914] transition-colors hover:bg-white">
+                  <MessageCircle className="size-4" aria-hidden /> WhatsApp
+                </a>
+                <a href={`mailto:${site.contact.email}`} className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-[10px] border border-line-strong bg-white/[0.04] px-5 text-sm font-medium text-star transition-colors hover:bg-white/[0.07]">
+                  <Mail className="size-4" aria-hidden /> Email
+                </a>
               </div>
-              <address className="flex gap-3 p-5 text-sm not-italic text-muted">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-lavender" aria-hidden />{site.contact.address.join(", ")}
-              </address>
             </div>
             <div>
               <p className="mb-3 text-[0.65rem] text-faint">Follow</p>
@@ -77,7 +76,7 @@ export default function ContactPage() {
                 ))}
               </ul>
             </div>
-            <DemoNote>Contact details and social links are placeholders</DemoNote>
+            <DemoNote>Social media links are placeholders until profiles are shared</DemoNote>
           </div>
         </div>
       </Section>

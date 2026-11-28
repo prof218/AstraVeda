@@ -6,7 +6,7 @@ import { BookingWizard } from "@/components/booking/booking-wizard";
 
 export const metadata: Metadata = {
   title: "Book a Consultation",
-  description: "Book a personal Vedic astrology, Kundli, numerology or Vastu consultation by video, audio or chat in a few simple steps.",
+  description: "Book a personal Vedic astrology, Kundli, numerology or Vastu consultation by phone or email in a few simple steps.",
   alternates: { canonical: "/book-consultation" },
   openGraph: { title: "Book a Consultation", description: "Schedule a personal astrology consultation in a few simple steps." },
 };

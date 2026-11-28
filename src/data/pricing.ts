@@ -1,36 +1,33 @@
 import type { PricingPlan } from "@/types";
 
-/**
- * DEMO pricing. These are illustrative amounts only — the client's real
- * consultation fees must be confirmed and entered here before launch.
- */
+/** Consultation fees as published on msastrologer.com. */
 export const pricingPlans: PricingPlan[] = [
   {
-    id: "basic",
-    name: "Basic Consultation",
+    id: "one-question",
+    name: "Ask 1 Question",
     price: 1100,
-    duration: "30 minutes",
-    modes: ["Audio", "Chat"],
-    features: ["One focused question or life area", "Birth chart overview", "Current dasha snapshot", "One simple remedy"],
+    duration: "10 minutes",
+    modes: ["Phone"],
+    features: ["One specific question answered", "Based on your birth chart", "Quick, focused guidance", "Book on WhatsApp or email"],
     bookingService: "general",
   },
   {
-    id: "premium",
-    name: "Premium Consultation",
+    id: "phone-30",
+    name: "Phone Consultation",
     price: 2100,
-    duration: "45 minutes",
-    modes: ["Video", "Audio", "Chat"],
-    features: ["Up to three life areas", "Detailed planetary analysis", "Transit & timing windows", "Personalised remedy plan", "7-day follow-up question"],
+    duration: "30 minutes",
+    modes: ["Phone"],
+    features: ["Discuss your main concerns in depth", "Vedic, KP, Lal Kitab & Numerology insight", "Timing and practical next steps", "Simple, affordable remedies", "Complete confidentiality"],
     highlighted: true,
     bookingService: "vedic",
   },
   {
-    id: "kundli",
-    name: "Detailed Kundli Analysis",
-    price: 3500,
-    duration: "75 minutes",
-    modes: ["Video", "Audio"],
-    features: ["Complete D1, D9 & D10 study", "Dosha & yoga assessment", "5-year dasha roadmap", "Career, marriage & health focus", "Gemstone suitability check"],
-    bookingService: "kundli",
+    id: "email-3",
+    name: "Email Consultation",
+    price: 1100,
+    duration: "Reply in 7–10 days",
+    modes: ["Email"],
+    features: ["Ask up to 3 questions", "Detailed written answers", "Useful if you are abroad or prefer writing", "Keep the guidance for reference"],
+    bookingService: "general",
   },
 ];

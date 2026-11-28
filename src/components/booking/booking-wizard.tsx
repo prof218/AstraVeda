@@ -181,7 +181,7 @@ export function BookingWizard() {
                         icon={s.icon}
                         title={s.name}
                         description={s.description}
-                        meta={<>{s.duration} · {formatPrice(s.price)} <span className="text-faint">(demo)</span></>}
+                        meta={<>{s.duration} · {formatPrice(s.price)}</>}
                       />
                     ))}
                   </div>
@@ -190,7 +190,7 @@ export function BookingWizard() {
 
               {step === 1 && (
                 <StepShell title="Consultation mode" subtitle="How would you like to connect?">
-                  <div role="radiogroup" aria-label="Consultation mode" className="grid gap-3 md:grid-cols-3">
+                  <div role="radiogroup" aria-label="Consultation mode" className="grid gap-3 md:grid-cols-2">
                     {consultationModes.map((m) => (
                       <OptionCard
                         key={m.id}
@@ -289,7 +289,7 @@ export function BookingWizard() {
                     <div className="flex items-center justify-between rounded-2xl border border-lavender/30 bg-white/[0.04] p-5">
                       <div>
                         <p className="text-sm text-muted">Consultation fee</p>
-                        <p className="text-[0.7rem] text-faint">Demo price · no payment is taken</p>
+                        <p className="text-[0.7rem] text-faint">Payment is arranged when you confirm on WhatsApp or email</p>
                       </div>
                       <p className="font-display text-4xl text-gradient">{formatPrice(service.price)}</p>
                     </div>
@@ -348,7 +348,7 @@ export function BookingWizard() {
               <SummaryRow icon="user" label="Client" value={state.details?.fullName} />
             </ul>
             <div className="mt-6 flex items-end justify-between border-t border-line pt-5">
-              <span className="text-sm text-muted">Total <span className="text-[0.65rem] text-faint">(demo)</span></span>
+              <span className="text-sm text-muted">Fee</span>
               <span className="font-display text-3xl text-star">{service ? formatPrice(service.price) : "—"}</span>
             </div>
           </div>

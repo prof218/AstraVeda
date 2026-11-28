@@ -18,7 +18,7 @@ function buildIcs(b: ConfirmedBooking, serviceName: string, minutes: number) {
   const end = `${y}${m}${d}T${String(Math.floor(endMin / 60)).padStart(2, "0")}${String(endMin % 60).padStart(2, "0")}00`;
   return [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//AstraVeda//Demo//EN", "BEGIN:VEVENT",
-    `UID:${b.reference}@astraveda.example`,
+    `UID:${b.reference}@astraveda-six.vercel.app`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
     `DTSTART;TZID=Asia/Kolkata:${start}`, `DTEND;TZID=Asia/Kolkata:${end}`,
     `SUMMARY:${serviceName} (DEMO — not a real appointment)`,
@@ -104,7 +104,7 @@ export function Confirmation({ booking, onReset }: { booking: ConfirmedBooking; 
           <TriangleAlert className="mt-0.5 size-4 shrink-0 text-solar" aria-hidden />
           <p>
             <strong className="font-semibold text-solar">This is a frontend prototype.</strong> No appointment has been sent to the astrologer,
-            no payment was taken and no confirmation email will arrive. To book for real, please contact {site.contact.phone} (placeholder).
+            no payment was taken and no confirmation email will arrive. To book now, message on WhatsApp at {site.contact.whatsapp} or email {site.contact.email}.
           </p>
         </div>
 

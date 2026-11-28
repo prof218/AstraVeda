@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Award } from "lucide-react";
-import { astrologer } from "@/data/astrologer";
+import { astrologer, astrologyFaqs } from "@/data/astrologer";
+import { Accordion } from "@/components/ui/accordion";
 import { PageHero } from "@/components/common/page-hero";
 import { Portrait } from "@/components/common/portrait";
-import { DemoNote, Section, SectionHeading } from "@/components/common/section";
+import { Section, SectionHeading } from "@/components/common/section";
 import { Stats } from "@/components/home/stats";
 import { WhyChooseUs } from "@/components/home/why-choose-us";
 import { CtaBand } from "@/components/common/cta-band";
@@ -47,7 +48,6 @@ export default function AboutPage() {
                 </li>
               ))}
             </ol>
-            <DemoNote className="mt-10">Placeholder biography and timeline</DemoNote>
           </div>
         </div>
       </Section>
@@ -68,7 +68,7 @@ export default function AboutPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <SectionHeading align="left" eyebrow="Achievements" title={<>Recognition along <em className="text-gradient">the way</em></>}
-            description="Milestones from the practice so far. These entries are placeholders until the client provides verified details." />
+            description="What thirty years of practice brings to every consultation." />
           <ul className="grid gap-4 sm:grid-cols-2">
             {astrologer.achievements.map((a) => (
               <li key={a.label} data-reveal className="rounded-2xl border border-line bg-white/[0.025] p-6">
@@ -92,6 +92,11 @@ export default function AboutPage() {
 
       <Stats />
       <WhyChooseUs />
+      <Section>
+        <SectionHeading eyebrow="FAQ" title={<>Common questions <em className="text-gradient">on astrology</em></>}
+          description="Straight answers to what people most often ask before a consultation." />
+        <Accordion items={astrologyFaqs} name="astrology-faq" className="mx-auto mt-12 max-w-3xl" />
+      </Section>
       <CtaBand />
     </>
   );

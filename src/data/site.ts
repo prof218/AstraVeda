@@ -1,23 +1,25 @@
 /**
  * Central site configuration.
- * Everything here is DEMO / PLACEHOLDER content — replace with the client's
- * real brand, contact details and social profiles before launch.
+ * Contact details come from msastrologer.com (Mahender Singh). Social links
+ * are still placeholders until the client shares real profile URLs.
  */
 export const site = {
   name: "AstraVeda",
   tagline: "Vedic Astrology & Celestial Guidance",
   description:
     "Personalised Vedic astrology, Kundli analysis, numerology and Vastu consultations — ancient wisdom translated into clear, practical guidance for modern life.",
-  url: "https://astraveda.example",
+  url: "https://astraveda-six.vercel.app",
   currency: "INR",
   locale: "en-IN",
   contact: {
-    phone: "+91 98765 43210",
-    phoneHref: "tel:+919876543210",
-    whatsapp: "+91 98765 43210",
-    email: "hello@astraveda.example",
-    address: ["Studio 4, Celestial Court", "Placeholder Road, New Delhi 110001", "India"],
-    hours: "Mon – Sat · 10:00 AM – 7:00 PM IST",
+    phone: "+91-9205573935",
+    phoneHref: "tel:+919205573935",
+    whatsapp: "+91-9205573935",
+    whatsappHref: "https://wa.me/919205573935",
+    email: "contactmsastrologer@gmail.com",
+    // No street address is published — consultations happen by phone and email.
+    address: ["Consultations by phone & email", "Clients across India and abroad"],
+    hours: "By appointment — book on WhatsApp or by email",
   },
   social: [
     { label: "Instagram", href: "https://instagram.com", icon: "instagram" },
