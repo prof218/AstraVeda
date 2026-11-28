@@ -270,3 +270,34 @@ html.motion-ok.hero-ready [data-hero-in] { animation: none; }
   0%, 100% { transform: rotate(-4deg); }
   50% { transform: rotate(4deg); }
 }
+/* Comet streaking down-right with a fading tail */
+.hero-comet {
+  transform-origin: right center;
+  rotate: 32deg;
+  background: linear-gradient(90deg, transparent, rgba(196,181,253,0.25) 55%, rgba(226,232,255,0.85) 92%, #fff);
+  border-radius: 9999px;
+  box-shadow: 0 0 10px 1px rgba(196,181,253,0.45);
+  animation: hero-comet 9s cubic-bezier(0.3, 0, 0.6, 1) infinite;
+  opacity: 0;
+}
+.hero-comet::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 0 12px 4px rgba(226,232,255,0.9), 0 0 28px 8px rgba(167,139,250,0.5);
+}
+@keyframes hero-comet {
+  0% { transform: translate(-260px, -150px) scaleX(0.4); opacity: 0; }
+  8% { opacity: 1; }
+  45% { transform: translate(40px, 24px) scaleX(1); opacity: 1; }
+  60%, 100% { transform: translate(110px, 66px) scaleX(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-comet { animation: none; opacity: 0.9; transform: none; }
+}

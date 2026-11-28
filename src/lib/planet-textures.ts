@@ -5,7 +5,7 @@
  */
 import { createNoise, smoothstep } from "./noise";
 
-export type PlanetKind = "earth" | "jupiter" | "saturn" | "mars" | "neptune" | "venus" | "moon";
+export type PlanetKind = "earth" | "jupiter" | "saturn" | "mars" | "neptune" | "venus" | "moon" | "mercury";
 
 type RGB = [number, number, number];
 const mix = (a: RGB, b: RGB, t: number): RGB => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
@@ -24,7 +24,7 @@ export function planetStrip(kind: PlanetKind, height = 256): HTMLCanvasElement {
   const ctx = tex.getContext("2d")!;
   const img = ctx.createImageData(W, H);
   const d = img.data;
-  const seed = { earth: 21, jupiter: 5, saturn: 9, mars: 13, neptune: 17, venus: 29, moon: 7 }[kind];
+  const seed = { earth: 21, jupiter: 5, saturn: 9, mars: 13, neptune: 17, venus: 29, moon: 7, mercury: 41 }[kind];
   const n = createNoise(seed);
 
   for (let j = 0; j < H; j++) {
@@ -107,6 +107,12 @@ export function planetStrip(kind: PlanetKind, height = 256): HTMLCanvasElement {
           c = mix([214, 160, 72], [250, 214, 140], smoothstep(0.35, 0.7, swirl));
           break;
         }
+        case "mercury": {
+          const h = n.fbm3(x * 3 + 1, y * 3, z * 3, 6);
+          const v = 0.5 + 0.28 * (h - 0.5) + 0.1 * (n.fbm3(x * 12, y * 12, z * 12, 3) - 0.5);
+          c = [v * 196, v * 182, v * 168];
+          break;
+        }
         case "moon": {
           const m = smoothstep(0.49, 0.57, n.fbm3(x * 1.15 + 3, y * 1.15, z * 1.15, 4));
           const fine = n.fbm3(x * 9, y * 9, z * 9, 4) - 0.5;
@@ -120,7 +126,7 @@ export function planetStrip(kind: PlanetKind, height = 256): HTMLCanvasElement {
     }
   }
   ctx.putImageData(img, 0, 0);
-  if (kind === "moon") stampCraters(ctx, W, H);
+  if (kind === "moon" || kind === "mercury") stampCraters(ctx, W, H);
 
   const strip = document.createElement("canvas");
   strip.width = W * 2; strip.height = H;
@@ -242,5 +248,148 @@ export function renderGalaxy(size = 420): HTMLCanvasElement {
     const sz = rand() < 0.94 ? 1 : 1.8;
     ctx.fillRect(x, y, sz, sz);
   }
+  return cvs;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reference-style scene assets                                       */
+/* ------------------------------------------------------------------ */
+
+/** Vivid purple nebula concentrated on the left and right edges. */
+export function renderSideNebula(w: number, h: number): HTMLCanvasElement {
+  const cvs = document.createElement("canvas");
+  cvs.width = w; cvs.height = h;
+  const ctx = cvs.getContext("2d")!;
+  const img = ctx.createImageData(w, h);
+  const d = img.data;
+  const n = createNoise(91);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const u = x / w, v = y / h;
+      // side masks: left cloud high-middle, right cloud middle-low, faint top wash
+      const left = Math.exp(-(((u - 0.05) / 0.27) ** 2) - (((v - 0.42) / 0.36) ** 2));
+      const right = Math.exp(-(((u - 0.95) / 0.27) ** 2) - (((v - 0.6) / 0.34) ** 2));
+      const top = Math.exp(-(((v - 0.05) / 0.25) ** 2)) * 0.25;
+      const mask = Math.min(1, left + right + top);
+      const cloud = n.fbm2(u * 4.5, v * 4.5, 6);
+      const wisps = n.fbm2(u * 11 + 7, v * 11, 5);
+      const dust = smoothstep(0.52, 0.7, n.fbm2(u * 6 + 30, v * 6, 5));
+      const dens = Math.max(0, smoothstep(0.32, 0.75, cloud) * 1.05 + smoothstep(0.5, 0.82, wisps) * 0.55) * mask * (1 - 0.65 * dust);
+      const hot = smoothstep(0.62, 0.9, cloud * wisps * 1.6) * mask;
+      const k = (y * w + x) * 4;
+      // violet body, magenta-pink highlights, deep blue edges
+      d[k] = Math.min(255, 96 * dens + 120 * hot + 20 * mask);
+      d[k + 1] = Math.min(255, 40 * dens + 60 * hot + 10 * mask);
+      d[k + 2] = Math.min(255, 210 * dens + 120 * hot + 60 * mask);
+      d[k + 3] = Math.min(255, 255 * Math.min(1, dens * 1.05 + hot * 0.6 + mask * 0.12));
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  return cvs;
+}
+
+/** Face-on purple spiral galaxy; tilt it in CSS and spin the canvas. */
+export function renderSpiralGalaxy(size = 520): HTMLCanvasElement {
+  const cvs = document.createElement("canvas");
+  cvs.width = cvs.height = size;
+  const ctx = cvs.getContext("2d")!;
+  let s = 7;
+  const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  const c = size / 2;
+  const halo = ctx.createRadialGradient(c, c, 0, c, c, c);
+  halo.addColorStop(0, "rgba(255,230,250,0.95)");
+  halo.addColorStop(0.1, "rgba(236,170,255,0.75)");
+  halo.addColorStop(0.35, "rgba(150,90,240,0.32)");
+  halo.addColorStop(1, "rgba(80,40,180,0)");
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, size, size);
+  // broad purple disc glow
+  const disc = ctx.createRadialGradient(c, c, 0, c, c, c * 0.9);
+  disc.addColorStop(0, "rgba(190,140,255,0.55)");
+  disc.addColorStop(0.5, "rgba(130,80,230,0.3)");
+  disc.addColorStop(1, "rgba(90,50,200,0)");
+  ctx.fillStyle = disc;
+  ctx.fillRect(0, 0, size, size);
+  ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < 16000; i++) {
+    const arm = i % 2;
+    const t = Math.pow(rand(), 0.8);
+    const a = t * 6.4 + arm * Math.PI + (rand() - 0.5) * (0.7 + t * 0.7);
+    const r = t * c * 0.92 + (rand() - 0.5) * 6;
+    const x = c + Math.cos(a) * r, y = c + Math.sin(a) * r;
+    const pink = rand() < 0.12;
+    const col = pink ? "255,150,230" : t < 0.25 ? "255,220,250" : rand() < 0.5 ? "170,120,255" : "120,150,255";
+    ctx.fillStyle = `rgba(${col},${(0.55 - t * 0.35) * (0.35 + rand() * 0.65)})`;
+    const sz = rand() < 0.9 ? 1.2 : 2.2;
+    ctx.fillRect(x, y, sz, sz);
+  }
+  // dust lanes
+  ctx.globalCompositeOperation = "destination-out";
+  for (let i = 0; i < 380; i++) {
+    const arm = i % 2;
+    const t = 0.2 + rand() * 0.7;
+    const a = t * 6.4 + arm * Math.PI + 0.5;
+    const r = t * c * 0.92;
+    ctx.fillStyle = "rgba(0,0,0,0.12)";
+    ctx.beginPath();
+    ctx.arc(c + Math.cos(a) * r, c + Math.sin(a) * r, 2 + rand() * 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = "lighter";
+  const core = ctx.createRadialGradient(c, c, 0, c, c, c * 0.16);
+  core.addColorStop(0, "rgba(255,255,255,1)");
+  core.addColorStop(0.35, "rgba(255,220,250,0.8)");
+  core.addColorStop(1, "rgba(230,160,255,0)");
+  ctx.fillStyle = core;
+  ctx.fillRect(0, 0, size, size);
+  ctx.globalCompositeOperation = "source-over";
+  return cvs;
+}
+
+/** Earth's night side for the horizon: dark oceans, faint land, city lights. Tileable horizontally. */
+export function renderNightEarthStrip(w = 2048, h = 360): HTMLCanvasElement {
+  const cvs = document.createElement("canvas");
+  cvs.width = w; cvs.height = h;
+  const ctx = cvs.getContext("2d")!;
+  const img = ctx.createImageData(w, h);
+  const d = img.data;
+  const n = createNoise(55);
+  const landAt = (u: number, v: number) => {
+    const ang = u * Math.PI * 2;
+    // sample on a cylinder so the strip tiles seamlessly
+    return n.fbm3(Math.cos(ang) * 2.2, v * 3.2, Math.sin(ang) * 2.2, 6);
+  };
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const u = x / w, v = y / h;
+      const land = smoothstep(0.5, 0.54, landAt(u, v));
+      const ang = u * Math.PI * 2;
+      const cloud = smoothstep(0.55, 0.75, n.fbm3(Math.cos(ang) * 4 + 9, v * 7, Math.sin(ang) * 4, 5));
+      let r = 8 + 10 * land, g = 20 + 14 * land, b = 56 + 6 * land;
+      r += cloud * 40; g += cloud * 60; b += cloud * 95;
+      const k = (y * w + x) * 4;
+      d[k] = r; d[k + 1] = g; d[k + 2] = b; d[k + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  // city lights: clustered on land
+  let s = 3;
+  const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < 3200; i++) {
+    const u = rand(), v = 0.15 + rand() * 0.85;
+    if (landAt(u, v) < 0.53) continue;
+    const cluster = n.fbm2(u * 40, v * 20, 3);
+    if (rand() > cluster * cluster * 1.6) continue;
+    const x = u * w, y = v * h;
+    const rad = 0.6 + rand() * 1.4;
+    const gl = ctx.createRadialGradient(x, y, 0, x, y, rad * 5);
+    gl.addColorStop(0, "rgba(255,214,140,0.8)");
+    gl.addColorStop(0.3, "rgba(255,160,70,0.25)");
+    gl.addColorStop(1, "rgba(255,120,40,0)");
+    ctx.fillStyle = gl;
+    ctx.fillRect(x - rad * 5, y - rad * 5, rad * 10, rad * 10);
+  }
+  ctx.globalCompositeOperation = "source-over";
   return cvs;
 }

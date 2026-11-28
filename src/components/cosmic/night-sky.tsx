@@ -17,10 +17,13 @@ export function NightSky({
   className,
   band = DEFAULT_BAND,
   meteors = true,
+  bandStrength = 1,
 }: {
   className?: string;
   band?: { ax: number; ay: number; bx: number; by: number };
   meteors?: boolean;
+  /** 0..1 — how visible the Milky Way band is */
+  bandStrength?: number;
 }) {
   const skyRef = useRef<HTMLCanvasElement>(null);
   const fxRef = useRef<HTMLCanvasElement>(null);
@@ -57,6 +60,7 @@ export function NightSky({
       const portrait = h > w * 1.1;
       twinkles = renderSky(sctx, w, h, {
         lowPower,
+        bandStrength,
         band: portrait ? { ax: 1.1, ay: 0.05, bx: -0.2, by: 0.75 } : band,
       });
       drawFx(0, 0);
@@ -141,7 +145,7 @@ export function NightSky({
       window.clearTimeout(resizeTimer);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, [band, meteors]);
+  }, [band, meteors, bandStrength]);
 
   return (
     <div aria-hidden className={cn("pointer-events-none absolute inset-0", className)}>

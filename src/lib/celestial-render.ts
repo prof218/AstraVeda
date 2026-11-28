@@ -265,7 +265,7 @@ function starColor(r: number) {
  * Renders the static sky into `ctx` (already sized; w/h in CSS pixels) and
  * returns the stars that should twinkle on the animated layer.
  */
-export function renderSky(ctx: CanvasRenderingContext2D, w: number, h: number, opts: { lowPower: boolean; band: { ax: number; ay: number; bx: number; by: number } }): TwinkleStar[] {
+export function renderSky(ctx: CanvasRenderingContext2D, w: number, h: number, opts: { lowPower: boolean; bandStrength?: number; band: { ax: number; ay: number; bx: number; by: number } }): TwinkleStar[] {
   const noise = createNoise(3);
   const rand = seededRandom(42);
   const { ax, ay, bx, by } = opts.band;
@@ -302,8 +302,8 @@ export function renderSky(ctx: CanvasRenderingContext2D, w: number, h: number, o
       const cloud = noise.fbm2(x * 0.004, y * 0.004, 6);
       const clumps = 0.35 + 1.25 * cloud * cloud;
       let I = g * (0.55 + 0.85 * core) * clumps * (1 - 0.88 * lane);
-      I = Math.max(0, I) * 0.42;
-      const halpha = smoothstep(0.66, 0.78, noise.fbm2(x * 0.009 + 50, y * 0.009, 4)) * g * 0.05;
+      I = Math.max(0, I) * 0.42 * (opts.bandStrength ?? 1);
+      const halpha = smoothstep(0.66, 0.78, noise.fbm2(x * 0.009 + 50, y * 0.009, 4)) * g * 0.05 * (opts.bandStrength ?? 1);
       // background: deep ink with faint airglow towards the bottom
       const yy = y / h;
       const br = 5 + 6 * yy * yy, bg = 4 + 6 * yy * yy, bb = 11 + 10 * yy * yy;
@@ -321,7 +321,7 @@ export function renderSky(ctx: CanvasRenderingContext2D, w: number, h: number, o
   ctx.drawImage(off, 0, 0, w, h);
 
   // 2) Unresolved star clouds inside the band
-  const bandStars = Math.round((opts.lowPower ? 1400 : 5200) * (w * h) / (1440 * 900));
+  const bandStars = Math.round((opts.lowPower ? 1400 : 5200) * (w * h) / (1440 * 900) * (opts.bandStrength ?? 1));
   for (let s = 0; s < bandStars; s++) {
     const t = rand() * 1.1 - 0.05;
     const gauss = (rand() + rand() + rand() - 1.5) / 1.5;

@@ -112,7 +112,9 @@ export function RotatingMoon({ className, light, period = 40 }: { className?: st
     let stop = () => {};
     let canvas: HTMLCanvasElement | null = null;
     let built = 0;
+    let cancelled = false;
     const build = () => {
+      if (cancelled) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cap = window.innerWidth < 768 ? 300 : 440;
       const size = Math.min(cap, Math.round(el.getBoundingClientRect().width * dpr / 8) * 8);
@@ -132,7 +134,8 @@ export function RotatingMoon({ className, light, period = 40 }: { className?: st
     const ro = new ResizeObserver(() => { window.clearTimeout(t); t = window.setTimeout(build, 200); });
     ro.observe(el);
     return () => {
-      if (typeof id === "number") window.clearTimeout(id);
+      cancelled = true;
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(id); else window.clearTimeout(id);
       ro.disconnect(); window.clearTimeout(t); stop(); canvas?.remove();
     };
   }, [light, period]);

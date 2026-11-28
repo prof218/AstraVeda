@@ -137,7 +137,7 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <ButtonLink href="/book-consultation" size="sm" className="hidden h-10 px-5 sm:inline-flex">
+            <ButtonLink href="/book-consultation" size="sm" className="hidden h-10 rounded-full bg-[linear-gradient(100deg,#8b5cf6,#a78bfa)] px-5 text-white shadow-[0_8px_24px_-8px_rgba(139,92,246,0.9)] hover:shadow-[0_10px_30px_-6px_rgba(167,139,250,1)] sm:inline-flex">
               Book Consultation
             </ButtonLink>
             <button

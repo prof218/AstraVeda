@@ -13,6 +13,7 @@ const ATMOSPHERE: Record<PlanetKind, string> = {
   neptune: "0 0 18px 2px rgba(96,165,250,0.5), 0 0 40px 4px rgba(37,99,235,0.3)",
   venus: "0 0 18px 4px rgba(245,196,106,0.65), 0 0 50px 10px rgba(245,196,106,0.25)",
   moon: "0 0 40px 6px rgba(226,232,255,0.22), 0 0 120px 24px rgba(139,92,246,0.18)",
+  mercury: "0 0 12px 1px rgba(226,214,200,0.25)",
 };
 
 /**
@@ -81,7 +82,7 @@ export function Planet({
 }
 
 /** Saturn with 3D-tilted, spinning rings that pass in front of and behind the globe. */
-export function Saturn({ size, className, terminatorAngle = 180 }: { size: number | string; className?: string; terminatorAngle?: number }) {
+export function Saturn({ size, className, terminatorAngle = 180, sphere = false }: { size: number | string; className?: string; terminatorAngle?: number; sphere?: boolean }) {
   const back = useRef<HTMLDivElement>(null);
   const front = useRef<HTMLDivElement>(null);
 
@@ -106,7 +107,7 @@ export function Saturn({ size, className, terminatorAngle = 180 }: { size: numbe
       <div className={ringBox} style={{ transform: "translate(-50%,-50%) rotate(-20deg)" }}>
         <div ref={back} className="h-full w-full" style={{ transform: "rotateX(76deg)" }} />
       </div>
-      <Planet kind="saturn" size="100%" spin={34} terminatorAngle={terminatorAngle} className="absolute inset-0" />
+      <Planet kind="saturn" size="100%" spin={34} terminatorAngle={terminatorAngle} sphere={sphere} className="absolute inset-0" />
       <div className={ringBox} style={{ transform: "translate(-50%,-50%) rotate(-20deg)", clipPath: "inset(50% 0 0 0)" }}>
         <div ref={front} className="h-full w-full" style={{ transform: "rotateX(76deg)" }} />
       </div>
